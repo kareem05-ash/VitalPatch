@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitalPatch — Patient Monitor</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="home-wrap">
+    <div class="home-logo">
+      <div class="home-logo-icon">❤️</div>
+      <div class="home-title">VITAL<span>PATCH</span></div>
+      <div class="home-sub">Patient Monitoring System</div>
+    </div>
+    <div class="mode-cards">
+      <div class="mode-card admin" onclick="goAdmin()">
+        <span class="mode-icon">🔐</span>
+        <div class="mode-label">ADMIN MODE</div>
+        <div class="mode-desc">Connect device, stream live vitals, register patients and manage records.</div>
+      </div>
+      <div class="mode-card user" onclick="goUser()">
+        <span class="mode-icon">🔍</span>
+        <div class="mode-label">USER MODE</div>
+        <div class="mode-desc">Search saved patient data by name or ID and print clinical reports.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PASSWORD -->
+<div class="page" id="page-password">
+  <div class="pw-wrap">
+    <div class="pw-card">
+      <span class="pw-icon">🔐</span>
+      <div class="pw-title">ADMIN ACCESS</div>
+      <div class="pw-sub">Enter the admin password to continue</div>
+      <input class="pw-input" id="pwInput" type="password" maxlength="6" placeholder="••••"
+             oninput="clearPwError()" onkeydown="if(event.key==='Enter')checkPassword()">
+      <div class="pw-error" id="pwError"></div>
+      <button class="btn-full btn-confirm" onclick="checkPassword()">CONFIRM</button>
+      <button class="btn-full btn-back-pw" onclick="showPage('page-home')">← BACK</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="page" id="page-admin">
+  <header class="dash-header">
+    <div class="dash-logo">
+      <div class="dash-logo-icon">❤️</div>
+      <div>
+        <div class="dash-logo-text">VITAL<span>PATCH</span></div>
+        <div style="font-size:10px;letter-spacing:2px;color:var(--muted)">PATIENT MONITOR</div>
+      </div>
+    </div>
+    <div class="dash-header-right">
+      <span class="mode-badge admin">ADMIN</span>
+      <button class="btn-ble" id="bleBtn" onclick="toggleBLE()">
+        <div class="ble-dot" id="bleDot"></div>
+        <span id="bleBtnText">CONNECT</span>
+      </button>
+      <div class="header-time">
+        <span class="time" id="clock">--:--:--</span>
+        <span><span class="status-dot"></span>ONLINE</span>
+      </div>
+      <button class="btn-home" onclick="showPage('page-home')">⌂ HOME</button>
+    </div>
+  </header>
+  <div class="container">
+
+    <!-- Registration -->
+    <div class="card accent-multi">
+      <div class="section-label">📋 Patient Registration</div>
+      <div class="input-grid">
+        <div class="input-group">
+          <div class="input-label">Full Name</div>
+          <input class="input-field" id="patientName" type="text" placeholder="Patient name...">
+        </div>
+        <div class="input-group">
+          <div class="input-label">Patient ID</div>
+          <input class="input-field" id="patientID" type="text" placeholder="e.g. P001">
+        </div>
+        <div class="input-group">
+          <div class="input-label">Age</div>
+          <input class="input-field" id="patientAge" type="number" placeholder="Age" min="1" max="120">
+        </div>
+        <div class="input-group">
+          <div class="input-label">Gender</div>
+          <select class="input-field" id="patientGender">
+            <option value="">Select...</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="loadPatient()">LOAD PATIENT</button>
+        <button class="btn btn-save" onclick="savePatient()">💾 SAVE READING</button>
+      </div>
+      <div class="ble-banner" id="bleBanner">
+        <span style="font-size:18px">📡</span>
+        <span id="bleBannerText">Connect your VitalPatch ESP32 to stream live vitals.</span>
+      </div>
+      <div class="finger-alert" id="fingerAlert">⚠️ No finger detected — place finger on the MAX30105</div>
+    </div>
+
+    <!-- Condition Banner -->
+    <div class="condition-banner stable" id="conditionBanner">
+      <div class="condition-left">
+        <div class="condition-icon" id="conditionIcon">✅</div>
+        <div>
+          <div class="condition-label-sm">Patient Condition</div>
+          <div class="condition-val" id="conditionVal">STABLE</div>
+          <div class="condition-reason" id="conditionReason">All vitals within normal range</div>
+        </div>
+      </div>
+      <div class="condition-right">
+        <div id="conditionTime">--</div>
+        <button class="alarm-btn alarm-off" id="alarmBtn" onclick="toggleAlarm()">🔔 ALARM ON</button>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-bar">
+      <div class="summary-patient">
+        <div class="summary-patient-label">Current Patient</div>
+        <div class="summary-patient-name" id="summaryName">— No Patient —</div>
+        <div class="summary-patient-meta" id="summaryMeta"></div>
+      </div>
+      <div class="summary-vitals">
+        <div class="summary-vital">
+          <span class="summary-vital-icon">❤️</span>
+          <div class="summary-vital-info">
+            <div class="summary-vital-val">
+              <span id="summaryHR" style="color:var(--hr-color)">--</span>
+              <span class="vital-arrow arrow-same" id="arrowHR"></span>
+            </div>
+            <div class="summary-vital-unit">BPM</div>
+          </div>
+        </div>
+        <div class="summary-vital">
+          <span class="summary-vital-icon">🌡️</span>
+          <div class="summary-vital-info">
+            <div class="summary-vital-val">
+              <span id="summaryTemp" style="color:var(--temp-color)">--</span>
+              <span class="vital-arrow arrow-same" id="arrowTemp"></span>
+            </div>
+            <div class="summary-vital-unit">°C</div>
+          </div>
+        </div>
+        <div class="summary-vital">
+          <span class="summary-vital-icon">🫁</span>
+          <div class="summary-vital-info">
+            <div class="summary-vital-val">
+              <span id="summarySpo2" style="color:var(--spo2-color)">--</span>
+              <span class="vital-arrow arrow-same" id="arrowSpo2"></span>
+            </div>
+            <div class="summary-vital-unit">SpO₂%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Charts -->
+    <div class="charts-grid">
+      <div class="chart-card hr-chart">
+        <div class="chart-title">
+          <span style="color:var(--hr-color)">❤️ HEART RATE</span>
+          <span style="font-size:11px;color:var(--muted)">LIVE</span>
+        </div>
+        <canvas class="chart-canvas" id="hrChart"></canvas>
+      </div>
+      <div class="chart-card spo2-chart">
+        <div class="chart-title">
+          <span style="color:var(--spo2-color)">🫁 SpO₂</span>
+          <span style="font-size:11px;color:var(--muted)">LIVE</span>
+        </div>
+        <canvas class="chart-canvas" id="spo2Chart"></canvas>
+      </div>
+      <div class="chart-card temp-chart">
+        <div class="chart-title">
+          <span style="color:var(--temp-color)">🌡️ TEMPERATURE</span>
+          <span style="font-size:11px;color:var(--muted)">LIVE</span>
+        </div>
+        <canvas class="chart-canvas" id="tempChart"></canvas>
+      </div>
+    </div>
+
+    <!-- HR -->
+    <div class="vital-section hr-section">
+      <div class="vital-header">
+        <div class="vital-header-left">
+          <div class="vital-icon-wrap">❤️</div>
+          <div>
+            <div class="vital-title" style="color:var(--hr-color)">HEART RATE</div>
+            <div class="vital-subtitle">Cardiac pulse monitoring</div>
+          </div>
+        </div>
+        <div class="status-badge status-normal" id="hrStatus">NORMAL</div>
+      </div>
+      <div class="vital-body">
+        <div class="vital-value-block">
+          <div class="vital-value-big" id="hrValue">--</div>
+          <div class="vital-value-unit">BEATS / MIN</div>
+          <div class="vital-minmax" id="hrMinMax"></div>
+        </div>
+        <div class="vital-info-block">
+          <div class="vital-info-row"><span class="vital-info-label">Normal Range</span><span class="vital-info-val" style="color:var(--good)">60 – 100 BPM</span></div>
+          <div class="vital-info-row"><span class="vital-info-label">Tachycardia</span><span class="vital-info-val" style="color:var(--danger)">&gt; 100 BPM</span></div>
+          <div class="vital-info-row"><span class="vital-info-label">Bradycardia</span><span class="vital-info-val" style="color:var(--warn)">&lt; 60 BPM</span></div>
+          <div class="vital-info-row"><span class="vital-info-label">Status</span><span class="vital-info-val" id="hrStatusText" style="color:var(--good)">Awaiting data</span></div>
+        </div>
+        <div class="gauge-wrap">
+          <div class="gauge-label">Level indicator</div>
+          <div class="gauge-track"><div class="gauge-fill" id="hrGauge" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Temp -->
+    <div class="vital-section temp-section">
+      <div class="vital-header">
+        <div class="vital-header-left">
+          <div class="vital-icon-wrap">🌡️</div>
+          <div>
+            <div class="vital-title" style="color:var(--temp-color)">TEMPERATURE</div>
+            <div class="vital-subtitle">Core body thermal monitoring</div>
+          </div>
+        </div>
+        <div class="status-badge status-normal" id="tempStatus">NORMAL</div>
+      </div>
+      <div class="vital-body">
+        <div class="vital-value-block">
+          <div class="vital-value-big" id="tempValue">--</div>
+          <div class="vital-value-unit">DEGREES °C</div>
+          <div class="vital-minmax" id="tempMinMax"></div>
+        </div>
+        <div class="vital-info-block">
+          <div class="vital-info-row"><span class="vital-info-label">Normal Range</span><span class="vital-info-val" style="color:var(--good)">36.1 – 37.2 °C</span></div>
+          <div class="vital-info-row"><span class="vital-info-label">Fever</span><span class="vital-info-val" style="color:var(--danger)">&gt; 37.5 °C</span></div>
+          <div class="vital-info-row"><span class="vital-info-label">Hypothermia</span><span class="vital-info-val" style="color:var(--warn)">&lt; 36.0 °C</span></div>
+          <div class="vital-info-row"><span class="vital-info-label">Status</span><span class="vital-info-val" id="tempStatusText" style="color:var(--good)">Awaiting data</span></div>
+        </div>
+        <div class="gauge-wrap">
+          <div class="gauge-label">Thermal level (30°C – 42°C scale)</div>
+          <div class="gauge-track"><div class="gauge-fill" id="tempGauge" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SpO2 -->
+    <div class="vital-section spo2-section">
+      <div class="vital-header">
+        <div class="vital-header-left">
+          <div class="vital-icon-wrap">🫁</div>
+          <div>
+            <div class="vital-title" style="color:var(--spo2-color)">OXYGEN SATURATION</div>
+            <div class="vital-subtitle">Peripheral capillary SpO₂</div>
+          </div>
+        </div>
+        <div class="status-badge status-normal" id="spo2Status">NORMAL</div>
+      </div>
+      <div class="vital-body">
+        <div class="vital-value-block">
+          <div class="vital-value-big" id="spo2Value">--</div>
+          <div class="vital-value-unit">PERCENT %</div>
+          <div class="vital-minmax" id="spo2MinMax"></div>
+        </div>
+        <div class="vital-info-block">
+          <div class="vital-info-row"><span class="vital-info-label">Normal Range</span><span class="vital-info-val" style="color:var(--good)">95 – 100 %</span></div>
+          <div class="vital-info-row"><span class="vital-info-label">Mild Hypoxia</span><span class="vital-info-val" style="color:var(--warn)">91 – 94 %</span></div>
+          <div class="vital-info-row"><span class="vital-info-label">Severe Hypoxia</span><span class="vital-info-val" style="color:var(--danger)">&lt; 90 %</span></div>
+          <div class="vital-info-row"><span class="vital-info-label">Status</span><span class="vital-info-val" id="spo2StatusText" style="color:var(--good)">Awaiting data</span></div>
+        </div>
+        <div class="gauge-wrap">
+          <div class="gauge-label">Saturation level</div>
+          <div class="gauge-track"><div class="gauge-fill" id="spo2Gauge" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saved Records -->
+    <div class="card accent-blue">
+      <div class="section-label">💾 Saved Patient Records</div>
+      <div class="saved-list" id="adminSavedList"><div class="empty-state">No patients saved yet.</div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- USER -->
+<div class="page" id="page-user">
+  <header class="dash-header">
+    <div class="dash-logo">
+      <div class="dash-logo-icon">❤️</div>
+      <div>
+        <div class="dash-logo-text">VITAL<span>PATCH</span></div>
+        <div style="font-size:10px;letter-spacing:2px;color:var(--muted)">PATIENT MONITOR</div>
+      </div>
+    </div>
+    <div class="dash-header-right">
+      <span class="mode-badge user">USER MODE</span>
+      <div class="header-time">
+        <span class="time" id="clockUser">--:--:--</span>
+        <span><span class="status-dot"></span>ONLINE</span>
+      </div>
+      <button class="btn-home" onclick="showPage('page-home')">⌂ HOME</button>
+    </div>
+  </header>
+  <div class="container">
+    <div class="card accent-blue">
+      <div class="section-label">🔍 Search Patient</div>
+      <div class="search-row">
+        <input class="input-field" id="searchQuery" type="text"
+               placeholder="Search by Patient ID or Name..." style="flex:1"
+               onkeydown="if(event.key==='Enter')searchPatient()">
+        <button class="btn btn-primary" onclick="searchPatient()">SEARCH</button>
+      </div>
+      <div class="not-found" id="notFound">❌ No patient found matching that ID or name</div>
+    </div>
+
+    <div class="search-result" id="searchResult">
+      <div class="result-card">
+        <div class="result-header">
+          <div>
+            <div class="result-name" id="resultName">--</div>
+            <div class="result-meta">
+              <span id="resultIDLabel">ID: --</span>
+              <span id="resultAgeSex">--</span>
+              <span id="resultReadings">-- readings</span>
+            </div>
+          </div>
+          <button class="btn btn-print" onclick="printReport()">🖨️ PRINT REPORT</button>
+        </div>
+
+        <!-- Condition badge in user view -->
+        <div class="condition-banner stable" id="userConditionBanner" style="margin-bottom:20px">
+          <div class="condition-left">
+            <div class="condition-icon" id="userConditionIcon">✅</div>
+            <div>
+              <div class="condition-label-sm">Patient Condition</div>
+              <div class="condition-val" id="userConditionVal">STABLE</div>
+              <div class="condition-reason" id="userConditionReason">All vitals within normal range</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-latest-label">Latest Reading</div>
+        <div class="result-vitals">
+          <div class="result-vital-box" style="border-color:rgba(255,56,96,0.25)">
+            <span class="result-vital-icon">❤️</span>
+            <span class="result-vital-val" id="resultHR" style="color:var(--hr-color)">--</span>
+            <div class="result-vital-label">Heart Rate BPM</div>
+            <div class="result-vital-status" id="resultHRStatus"></div>
+            <div class="result-vital-minmax" id="resultHRMinMax"></div>
+          </div>
+          <div class="result-vital-box" style="border-color:rgba(255,179,0,0.25)">
+            <span class="result-vital-icon">🌡️</span>
+            <span class="result-vital-val" id="resultTemp" style="color:var(--temp-color)">--</span>
+            <div class="result-vital-label">Temperature °C</div>
+            <div class="result-vital-status" id="resultTempStatus"></div>
+            <div class="result-vital-minmax" id="resultTempMinMax"></div>
+          </div>
+          <div class="result-vital-box" style="border-color:rgba(0,200,255,0.25)">
+            <span class="result-vital-icon">🫁</span>
+            <span class="result-vital-val" id="resultSpo2" style="color:var(--spo2-color)">--</span>
+            <div class="result-vital-label">SpO₂ %</div>
+            <div class="result-vital-status" id="resultSpo2Status"></div>
+            <div class="result-vital-minmax" id="resultSpo2MinMax"></div>
+          </div>
+        </div>
+
+        <div class="section-label" style="margin-top:8px">📋 Reading History</div>
+        <div style="overflow-x:auto">
+          <table class="history-table" id="historyTable">
+            <thead><tr>
+              <th>#</th><th>Time</th>
+              <th>HR (BPM)</th><th>Temp (°C)</th><th>SpO₂ (%)</th>
+              <th>HR Status</th><th>Temp Status</th><th>SpO₂ Status</th>
+            </tr></thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
