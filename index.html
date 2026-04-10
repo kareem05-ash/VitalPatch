@@ -31,6 +31,12 @@
       </div>
     </div>
   </div>
+  <footer class="site-footer">
+    <a class="footer-link" href="https://drive.google.com/file/d/1RcjgxBRMBvw7sdtahl4GMDWoiWD99a25/view?usp=drivesdk" target="_blank" rel="noopener">
+      📄 Components &amp; Datasheets
+    </a>
+    <span class="footer-copy">VitalPatch Pro — ESP32 · MAX30105 · MLX90614 · MPU6050 · SH1106</span>
+  </footer>
 </div>
 
 <!-- PASSWORD -->
@@ -54,21 +60,12 @@
   <header class="dash-header">
     <div class="dash-logo">
       <div class="dash-logo-icon">❤️</div>
-      <div>
-        <div class="dash-logo-text">VITAL<span>PATCH</span></div>
-        <div style="font-size:10px;letter-spacing:2px;color:var(--muted)">PATIENT MONITOR</div>
-      </div>
+      <div><div class="dash-logo-text">VITAL<span>PATCH</span></div><div style="font-size:10px;letter-spacing:2px;color:var(--muted)">PATIENT MONITOR</div></div>
     </div>
     <div class="dash-header-right">
       <span class="mode-badge admin">ADMIN</span>
-      <button class="btn-ble" id="bleBtn" onclick="toggleBLE()">
-        <div class="ble-dot" id="bleDot"></div>
-        <span id="bleBtnText">CONNECT</span>
-      </button>
-      <div class="header-time">
-        <span class="time" id="clock">--:--:--</span>
-        <span><span class="status-dot"></span>ONLINE</span>
-      </div>
+      <button class="btn-ble" id="bleBtn" onclick="toggleBLE()"><div class="ble-dot" id="bleDot"></div><span id="bleBtnText">CONNECT</span></button>
+      <div class="header-time"><span class="time" id="clock">--:--:--</span><span><span class="status-dot"></span>ONLINE</span></div>
       <button class="btn-home" onclick="showPage('page-home')">⌂ HOME</button>
     </div>
   </header>
@@ -78,20 +75,10 @@
     <div class="card accent-multi">
       <div class="section-label">📋 Patient Registration</div>
       <div class="input-grid">
-        <div class="input-group">
-          <div class="input-label">Full Name</div>
-          <input class="input-field" id="patientName" type="text" placeholder="Patient name...">
-        </div>
-        <div class="input-group">
-          <div class="input-label">Patient ID</div>
-          <input class="input-field" id="patientID" type="text" placeholder="e.g. P001">
-        </div>
-        <div class="input-group">
-          <div class="input-label">Age</div>
-          <input class="input-field" id="patientAge" type="number" placeholder="Age" min="1" max="120">
-        </div>
-        <div class="input-group">
-          <div class="input-label">Gender</div>
+        <div class="input-group"><div class="input-label">Full Name</div><input class="input-field" id="patientName" type="text" placeholder="Patient name..."></div>
+        <div class="input-group"><div class="input-label">Patient ID</div><input class="input-field" id="patientID" type="text" placeholder="e.g. P001"></div>
+        <div class="input-group"><div class="input-label">Age</div><input class="input-field" id="patientAge" type="number" placeholder="Age" min="1" max="120"></div>
+        <div class="input-group"><div class="input-label">Gender</div>
           <select class="input-field" id="patientGender">
             <option value="">Select...</option>
             <option value="Male">Male</option>
@@ -104,10 +91,7 @@
         <button class="btn btn-primary" onclick="loadPatient()">LOAD PATIENT</button>
         <button class="btn btn-save" onclick="savePatient()">💾 SAVE READING</button>
       </div>
-      <div class="ble-banner" id="bleBanner">
-        <span style="font-size:18px">📡</span>
-        <span id="bleBannerText">Connect your VitalPatch ESP32 to stream live vitals.</span>
-      </div>
+      <div class="ble-banner" id="bleBanner"><span style="font-size:18px">📡</span><span id="bleBannerText">Connect your VitalPatch ESP32 to stream live vitals.</span></div>
       <div class="finger-alert" id="fingerAlert">⚠️ No finger detected — place finger on the MAX30105</div>
     </div>
 
@@ -135,60 +119,24 @@
         <div class="summary-patient-meta" id="summaryMeta"></div>
       </div>
       <div class="summary-vitals">
-        <div class="summary-vital">
-          <span class="summary-vital-icon">❤️</span>
-          <div class="summary-vital-info">
-            <div class="summary-vital-val">
-              <span id="summaryHR" style="color:var(--hr-color)">--</span>
-              <span class="vital-arrow arrow-same" id="arrowHR"></span>
-            </div>
-            <div class="summary-vital-unit">BPM</div>
-          </div>
-        </div>
-        <div class="summary-vital">
-          <span class="summary-vital-icon">🌡️</span>
-          <div class="summary-vital-info">
-            <div class="summary-vital-val">
-              <span id="summaryTemp" style="color:var(--temp-color)">--</span>
-              <span class="vital-arrow arrow-same" id="arrowTemp"></span>
-            </div>
-            <div class="summary-vital-unit">°C</div>
-          </div>
-        </div>
-        <div class="summary-vital">
-          <span class="summary-vital-icon">🫁</span>
-          <div class="summary-vital-info">
-            <div class="summary-vital-val">
-              <span id="summarySpo2" style="color:var(--spo2-color)">--</span>
-              <span class="vital-arrow arrow-same" id="arrowSpo2"></span>
-            </div>
-            <div class="summary-vital-unit">SpO₂%</div>
-          </div>
-        </div>
+        <div class="summary-vital"><span class="summary-vital-icon">❤️</span><div class="summary-vital-info"><div class="summary-vital-val"><span id="summaryHR" style="color:var(--hr-color)">--</span><span class="vital-arrow arrow-same" id="arrowHR"></span></div><div class="summary-vital-unit">BPM</div></div></div>
+        <div class="summary-vital"><span class="summary-vital-icon">🌡️</span><div class="summary-vital-info"><div class="summary-vital-val"><span id="summaryTemp" style="color:var(--temp-color)">--</span><span class="vital-arrow arrow-same" id="arrowTemp"></span></div><div class="summary-vital-unit">°C</div></div></div>
+        <div class="summary-vital"><span class="summary-vital-icon">🫁</span><div class="summary-vital-info"><div class="summary-vital-val"><span id="summarySpo2" style="color:var(--spo2-color)">--</span><span class="vital-arrow arrow-same" id="arrowSpo2"></span></div><div class="summary-vital-unit">SpO₂%</div></div></div>
       </div>
     </div>
 
     <!-- Live Charts -->
     <div class="charts-grid">
       <div class="chart-card hr-chart">
-        <div class="chart-title">
-          <span style="color:var(--hr-color)">❤️ HEART RATE</span>
-          <span style="font-size:11px;color:var(--muted)">LIVE</span>
-        </div>
+        <div class="chart-title"><span style="color:var(--hr-color)">❤️ HEART RATE</span><span style="font-size:11px;color:var(--muted)">LIVE</span></div>
         <canvas class="chart-canvas" id="hrChart"></canvas>
       </div>
       <div class="chart-card spo2-chart">
-        <div class="chart-title">
-          <span style="color:var(--spo2-color)">🫁 SpO₂</span>
-          <span style="font-size:11px;color:var(--muted)">LIVE</span>
-        </div>
+        <div class="chart-title"><span style="color:var(--spo2-color)">🫁 SpO₂</span><span style="font-size:11px;color:var(--muted)">LIVE</span></div>
         <canvas class="chart-canvas" id="spo2Chart"></canvas>
       </div>
       <div class="chart-card temp-chart">
-        <div class="chart-title">
-          <span style="color:var(--temp-color)">🌡️ TEMPERATURE</span>
-          <span style="font-size:11px;color:var(--muted)">LIVE</span>
-        </div>
+        <div class="chart-title"><span style="color:var(--temp-color)">🌡️ TEMPERATURE</span><span style="font-size:11px;color:var(--muted)">LIVE</span></div>
         <canvas class="chart-canvas" id="tempChart"></canvas>
       </div>
     </div>
@@ -196,13 +144,7 @@
     <!-- HR -->
     <div class="vital-section hr-section">
       <div class="vital-header">
-        <div class="vital-header-left">
-          <div class="vital-icon-wrap">❤️</div>
-          <div>
-            <div class="vital-title" style="color:var(--hr-color)">HEART RATE</div>
-            <div class="vital-subtitle">Cardiac pulse monitoring</div>
-          </div>
-        </div>
+        <div class="vital-header-left"><div class="vital-icon-wrap">❤️</div><div><div class="vital-title" style="color:var(--hr-color)">HEART RATE</div><div class="vital-subtitle">Cardiac pulse monitoring</div></div></div>
         <div class="status-badge status-normal" id="hrStatus">NORMAL</div>
       </div>
       <div class="vital-body">
@@ -217,23 +159,14 @@
           <div class="vital-info-row"><span class="vital-info-label">Bradycardia</span><span class="vital-info-val" style="color:var(--warn)">&lt; 60 BPM</span></div>
           <div class="vital-info-row"><span class="vital-info-label">Status</span><span class="vital-info-val" id="hrStatusText" style="color:var(--good)">Awaiting data</span></div>
         </div>
-        <div class="gauge-wrap">
-          <div class="gauge-label">Level indicator</div>
-          <div class="gauge-track"><div class="gauge-fill" id="hrGauge" style="width:0%"></div></div>
-        </div>
+        <div class="gauge-wrap"><div class="gauge-label">Level indicator</div><div class="gauge-track"><div class="gauge-fill" id="hrGauge" style="width:0%"></div></div></div>
       </div>
     </div>
 
     <!-- Temp -->
     <div class="vital-section temp-section">
       <div class="vital-header">
-        <div class="vital-header-left">
-          <div class="vital-icon-wrap">🌡️</div>
-          <div>
-            <div class="vital-title" style="color:var(--temp-color)">TEMPERATURE</div>
-            <div class="vital-subtitle">Core body thermal monitoring</div>
-          </div>
-        </div>
+        <div class="vital-header-left"><div class="vital-icon-wrap">🌡️</div><div><div class="vital-title" style="color:var(--temp-color)">TEMPERATURE</div><div class="vital-subtitle">Core body thermal monitoring</div></div></div>
         <div class="status-badge status-normal" id="tempStatus">NORMAL</div>
       </div>
       <div class="vital-body">
@@ -248,23 +181,14 @@
           <div class="vital-info-row"><span class="vital-info-label">Hypothermia</span><span class="vital-info-val" style="color:var(--warn)">&lt; 36.0 °C</span></div>
           <div class="vital-info-row"><span class="vital-info-label">Status</span><span class="vital-info-val" id="tempStatusText" style="color:var(--good)">Awaiting data</span></div>
         </div>
-        <div class="gauge-wrap">
-          <div class="gauge-label">Thermal level (30°C – 42°C scale)</div>
-          <div class="gauge-track"><div class="gauge-fill" id="tempGauge" style="width:0%"></div></div>
-        </div>
+        <div class="gauge-wrap"><div class="gauge-label">Thermal level (30°C – 42°C scale)</div><div class="gauge-track"><div class="gauge-fill" id="tempGauge" style="width:0%"></div></div></div>
       </div>
     </div>
 
     <!-- SpO2 -->
     <div class="vital-section spo2-section">
       <div class="vital-header">
-        <div class="vital-header-left">
-          <div class="vital-icon-wrap">🫁</div>
-          <div>
-            <div class="vital-title" style="color:var(--spo2-color)">OXYGEN SATURATION</div>
-            <div class="vital-subtitle">Peripheral capillary SpO₂</div>
-          </div>
-        </div>
+        <div class="vital-header-left"><div class="vital-icon-wrap">🫁</div><div><div class="vital-title" style="color:var(--spo2-color)">OXYGEN SATURATION</div><div class="vital-subtitle">Peripheral capillary SpO₂</div></div></div>
         <div class="status-badge status-normal" id="spo2Status">NORMAL</div>
       </div>
       <div class="vital-body">
@@ -279,9 +203,59 @@
           <div class="vital-info-row"><span class="vital-info-label">Severe Hypoxia</span><span class="vital-info-val" style="color:var(--danger)">&lt; 90 %</span></div>
           <div class="vital-info-row"><span class="vital-info-label">Status</span><span class="vital-info-val" id="spo2StatusText" style="color:var(--good)">Awaiting data</span></div>
         </div>
-        <div class="gauge-wrap">
-          <div class="gauge-label">Saturation level</div>
-          <div class="gauge-track"><div class="gauge-fill" id="spo2Gauge" style="width:0%"></div></div>
+        <div class="gauge-wrap"><div class="gauge-label">Saturation level</div><div class="gauge-track"><div class="gauge-fill" id="spo2Gauge" style="width:0%"></div></div></div>
+      </div>
+    </div>
+
+    <!-- Fall Detection -->
+    <div class="fall-section">
+      <div style="padding:20px 28px 16px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div class="vital-icon-wrap" style="background:rgba(255,145,0,0.15);box-shadow:0 0 20px rgba(255,145,0,0.2);font-size:24px;width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center">🫸</div>
+          <div>
+            <div class="vital-title" style="color:#ff9100;font-family:var(--font-head);font-size:19px;font-weight:700;letter-spacing:1px">FALL DETECTION</div>
+            <div class="vital-subtitle" style="font-size:12px;color:var(--muted);margin-top:2px">MPU6050 accelerometer monitoring</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="fall-counter" id="fallCount">Falls detected: 0</span>
+          <button class="btn-sm" style="background:rgba(255,145,0,0.1);color:#ff9100;border:1px solid rgba(255,145,0,0.3)" onclick="clearFallLog()">CLEAR LOG</button>
+        </div>
+      </div>
+      <div style="padding:0 28px 28px">
+        <div class="fall-status-ok" id="fallStatus">
+          <div class="fall-status-icon">🟢</div>
+          <div>
+            <div class="fall-status-label" style="color:var(--good)">NO FALL DETECTED</div>
+            <div class="fall-status-sub">Patient is stable — no fall event registered</div>
+          </div>
+        </div>
+        <!-- Battery + Steps row -->
+        <div style="display:flex;gap:16px;margin-top:16px;flex-wrap:wrap">
+          <!-- Battery -->
+          <div style="flex:1;min-width:180px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:14px 18px">
+            <div style="font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">🔋 Battery</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+              <span id="batIcon" style="font-size:22px">🔋</span>
+              <span id="batPct" style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--good)">--%</span>
+            </div>
+            <div style="background:rgba(255,255,255,0.07);border-radius:6px;height:8px;overflow:hidden">
+              <div id="batBar" style="height:100%;width:0%;background:var(--good);border-radius:6px;transition:width 0.8s ease,background 0.4s ease"></div>
+            </div>
+          </div>
+          <!-- Steps -->
+          <div style="flex:1;min-width:180px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:14px 18px">
+            <div style="font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">👣 Step Count</div>
+            <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--spo2-color)" id="stepCount">-- steps</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:6px">Counted since last power-on</div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px">
+          <div style="font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px">📋 Fall Event Log</div>
+          <div class="fall-log" id="fallLog">
+            <div class="fall-log-empty">No fall events recorded yet</div>
+          </div>
         </div>
       </div>
     </div>
@@ -291,8 +265,15 @@
       <div class="section-label">💾 Saved Patient Records</div>
       <div class="saved-list" id="adminSavedList"><div class="empty-state">No patients saved yet.</div></div>
     </div>
-
   </div>
+</div>
+
+  <footer class="site-footer">
+    <a class="footer-link" href="https://drive.google.com/file/d/1RcjgxBRMBvw7sdtahl4GMDWoiWD99a25/view?usp=drivesdk" target="_blank" rel="noopener">
+      📄 Components &amp; Datasheets
+    </a>
+    <span class="footer-copy">VitalPatch Pro — ESP32 · MAX30105 · MLX90614 · MPU6050 · SH1106</span>
+  </footer>
 </div>
 
 <!-- USER -->
@@ -300,17 +281,11 @@
   <header class="dash-header">
     <div class="dash-logo">
       <div class="dash-logo-icon">❤️</div>
-      <div>
-        <div class="dash-logo-text">VITAL<span>PATCH</span></div>
-        <div style="font-size:10px;letter-spacing:2px;color:var(--muted)">PATIENT MONITOR</div>
-      </div>
+      <div><div class="dash-logo-text">VITAL<span>PATCH</span></div><div style="font-size:10px;letter-spacing:2px;color:var(--muted)">PATIENT MONITOR</div></div>
     </div>
     <div class="dash-header-right">
       <span class="mode-badge user">USER MODE</span>
-      <div class="header-time">
-        <span class="time" id="clockUser">--:--:--</span>
-        <span><span class="status-dot"></span>ONLINE</span>
-      </div>
+      <div class="header-time"><span class="time" id="clockUser">--:--:--</span><span><span class="status-dot"></span>ONLINE</span></div>
       <button class="btn-home" onclick="showPage('page-home')">⌂ HOME</button>
     </div>
   </header>
@@ -318,9 +293,7 @@
     <div class="card accent-blue">
       <div class="section-label">🔍 Search Patient</div>
       <div class="search-row">
-        <input class="input-field" id="searchQuery" type="text"
-               placeholder="Search by Patient ID or Name..." style="flex:1"
-               onkeydown="if(event.key==='Enter')searchPatient()">
+        <input class="input-field" id="searchQuery" type="text" placeholder="Search by Patient ID or Name..." style="flex:1" onkeydown="if(event.key==='Enter')searchPatient()">
         <button class="btn btn-primary" onclick="searchPatient()">SEARCH</button>
       </div>
       <div class="not-found" id="notFound">❌ No patient found matching that ID or name</div>
@@ -391,8 +364,14 @@
       </div>
     </div>
   </div>
+  <footer class="site-footer">
+    <a class="footer-link" href="https://drive.google.com/file/d/1RcjgxBRMBvw7sdtahl4GMDWoiWD99a25/view?usp=drivesdk" target="_blank" rel="noopener">
+      📄 Components &amp; Datasheets
+    </a>
+    <span class="footer-copy">VitalPatch Pro — ESP32 · MAX30105 · MLX90614 · MPU6050 · SH1106</span>
+  </footer>
 </div>
 
-<script src="main.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
