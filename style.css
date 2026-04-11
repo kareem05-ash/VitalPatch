@@ -245,8 +245,8 @@ select.input-field option{background:#0b1628}
 .result-vital-minmax{font-size:11px;color:var(--muted);margin-top:4px;font-family:var(--font-mono)}
 
 /* FALL DETECTION */
-.fall-section{border-radius:20px;margin-bottom:24px;overflow:hidden;border:1px solid var(--border);background:linear-gradient(160deg,#0f0a00 0%,var(--panel) 40%);animation:fadeUp 0.5s ease both}
-.fall-section::before{content:'';display:block;height:3px;background:linear-gradient(90deg,#ff6f00,#ff9100,#ffd740)}
+.fall-section{border-radius:20px;margin-bottom:24px;overflow:hidden;border:1px solid rgba(179,0,255,0.25);background:linear-gradient(160deg,#120020 0%,var(--panel) 40%);animation:fadeUp 0.5s ease both}
+.fall-section::before{content:'';display:block;height:3px;background:linear-gradient(90deg,#7b00ff,#b300ff,#e040fb)}
 .fall-status-ok{background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.25);border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:14px}
 .fall-status-alert{background:rgba(255,23,68,0.12);border:1px solid rgba(255,23,68,0.5);border-radius:14px;padding:18px 22px;display:flex;align-items:center;gap:14px;animation:criticalPulse 1.2s ease-in-out infinite}
 .fall-status-icon{font-size:36px;flex-shrink:0}

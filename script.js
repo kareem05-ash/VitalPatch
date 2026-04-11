@@ -93,7 +93,7 @@ function renderAdminSaved(){
       <div class="saved-item-vitals">
         <span>❤️ <b>${latest.hr??'--'}</b></span>
         <span>🌡️ <b>${latest.temp!=null?latest.temp.toFixed(1):'--'}</b></span>
-        <span>🫁 <b>${latest.spo2??'--'}</b></span>
+        <span>💧 <b>${latest.spo2??'--'}</b></span>
       </div>
       <div class="saved-item-actions">
         <button class="btn-sm btn-sm-del" onclick="deletePatient('${p.id}')">✕</button>
@@ -188,7 +188,12 @@ function clearFallLog(){
 // ── Steps ──────────────────────────────────────────────────────
 function updateStepCount(steps){
   const el=document.getElementById('stepCount');
-  if(el)el.textContent=steps.toLocaleString()+' steps';
+  if(el)el.textContent=steps.toLocaleString();
+  // Estimate: avg stride 0.75m, 0.04 kcal/step
+  const dist=document.getElementById('stepDist');
+  const cal=document.getElementById('stepCal');
+  if(dist)dist.textContent=steps>0?Math.round(steps*0.75)+' m':'-- m';
+  if(cal)cal.textContent=steps>0?(steps*0.04).toFixed(1)+' kcal':'-- kcal';
 }
 
 // ── Battery ────────────────────────────────────────────────────
@@ -466,7 +471,7 @@ function printReport(){
   </head><body><div style="max-width:820px;margin:0 auto;padding:40px 32px">
     <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #e02040;padding-bottom:20px;margin-bottom:28px">
       <div><div style="font-size:30px;font-weight:800;letter-spacing:2px">VITAL<span style="color:#0077cc">PATCH</span></div><div style="font-size:11px;letter-spacing:3px;color:#888;margin-top:4px">PATIENT CLINICAL REPORT</div></div>
-      <div style="text-align:right;font-size:12px;color:#666"><div>Printed: ${new Date().toLocaleString()}</div><div style="margin-top:4px">VitalPatch Monitor v23</div></div>
+      <div style="text-align:right;font-size:12px;color:#666"><div>Printed: ${new Date().toLocaleString()}</div><div style="margin-top:4px">VitalPatch Monitor v25</div></div>
     </div>
     <div style="background:#f7f9fc;border:1px solid #e0e8f0;border-radius:12px;padding:20px 24px;margin-bottom:20px;display:flex;gap:32px;flex-wrap:wrap">
       <div><div style="font-size:10px;letter-spacing:2px;color:#888;text-transform:uppercase">Patient Name</div><div style="font-size:22px;font-weight:700;margin-top:4px">${p.name}</div></div>
@@ -496,7 +501,7 @@ function printReport(){
         ${tMM?`<div style="font-size:11px;color:#999;margin-top:4px">Min ${tMM.min.toFixed(1)} · Max ${tMM.max.toFixed(1)}</div>`:''}
       </div>
       <div style="border:2px solid ${vc(sS)};border-radius:12px;padding:16px;text-align:center">
-        <div style="font-size:28px;margin-bottom:6px">🫁</div>
+        <div style="font-size:28px;margin-bottom:6px">💧</div>
         <div style="font-size:30px;font-weight:700;color:${vc(sS)}">${latest.spo2??'--'}</div>
         <div style="font-size:10px;color:#888;margin-top:4px;text-transform:uppercase;letter-spacing:1px">SpO₂ %</div>
         <div style="font-size:12px;font-weight:600;margin-top:5px;color:${vc(sS)}">${sS.txt}</div>

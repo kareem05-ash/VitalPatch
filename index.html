@@ -121,7 +121,7 @@
       <div class="summary-vitals">
         <div class="summary-vital"><span class="summary-vital-icon">❤️</span><div class="summary-vital-info"><div class="summary-vital-val"><span id="summaryHR" style="color:var(--hr-color)">--</span><span class="vital-arrow arrow-same" id="arrowHR"></span></div><div class="summary-vital-unit">BPM</div></div></div>
         <div class="summary-vital"><span class="summary-vital-icon">🌡️</span><div class="summary-vital-info"><div class="summary-vital-val"><span id="summaryTemp" style="color:var(--temp-color)">--</span><span class="vital-arrow arrow-same" id="arrowTemp"></span></div><div class="summary-vital-unit">°C</div></div></div>
-        <div class="summary-vital"><span class="summary-vital-icon">🫁</span><div class="summary-vital-info"><div class="summary-vital-val"><span id="summarySpo2" style="color:var(--spo2-color)">--</span><span class="vital-arrow arrow-same" id="arrowSpo2"></span></div><div class="summary-vital-unit">SpO₂%</div></div></div>
+        <div class="summary-vital"><span class="summary-vital-icon">💧</span><div class="summary-vital-info"><div class="summary-vital-val"><span id="summarySpo2" style="color:var(--spo2-color)">--</span><span class="vital-arrow arrow-same" id="arrowSpo2"></span></div><div class="summary-vital-unit">SpO₂%</div></div></div>
       </div>
     </div>
 
@@ -132,7 +132,7 @@
         <canvas class="chart-canvas" id="hrChart"></canvas>
       </div>
       <div class="chart-card spo2-chart">
-        <div class="chart-title"><span style="color:var(--spo2-color)">🫁 SpO₂</span><span style="font-size:11px;color:var(--muted)">LIVE</span></div>
+        <div class="chart-title"><span style="color:var(--spo2-color)">💧 SpO₂</span><span style="font-size:11px;color:var(--muted)">LIVE</span></div>
         <canvas class="chart-canvas" id="spo2Chart"></canvas>
       </div>
       <div class="chart-card temp-chart">
@@ -188,7 +188,7 @@
     <!-- SpO2 -->
     <div class="vital-section spo2-section">
       <div class="vital-header">
-        <div class="vital-header-left"><div class="vital-icon-wrap">🫁</div><div><div class="vital-title" style="color:var(--spo2-color)">OXYGEN SATURATION</div><div class="vital-subtitle">Peripheral capillary SpO₂</div></div></div>
+        <div class="vital-header-left"><div class="vital-icon-wrap">💧</div><div><div class="vital-title" style="color:var(--spo2-color)">OXYGEN SATURATION</div><div class="vital-subtitle">Peripheral capillary SpO₂</div></div></div>
         <div class="status-badge status-normal" id="spo2Status">NORMAL</div>
       </div>
       <div class="vital-body">
@@ -207,19 +207,44 @@
       </div>
     </div>
 
-    <!-- Fall Detection -->
+    <!-- ── BATTERY CARD (green) ─────────────────────────────── -->
+    <div style="border-radius:20px;margin-bottom:24px;overflow:hidden;border:1px solid rgba(0,230,118,0.25);background:linear-gradient(160deg,#001a0e 0%,var(--panel) 40%);animation:fadeUp 0.5s ease both">
+      <div style="height:3px;background:linear-gradient(90deg,#00e676,#00c853,#69f0ae)"></div>
+      <div style="padding:20px 28px 24px">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+          <div style="width:50px;height:50px;border-radius:14px;background:rgba(0,230,118,0.12);box-shadow:0 0 20px rgba(0,230,118,0.2);display:flex;align-items:center;justify-content:center;font-size:26px">🔋</div>
+          <div>
+            <div style="font-family:var(--font-head);font-size:19px;font-weight:700;letter-spacing:1px;color:#00e676">BATTERY</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">3.7V LiPo — TP4056 charging circuit</div>
+          </div>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+            <span id="batIcon" style="font-size:20px">🔋</span>
+            <span id="batPct" style="font-family:var(--font-mono);font-size:32px;font-weight:700;color:#00e676">--%</span>
+          </div>
+        </div>
+        <div style="font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Charge level</div>
+        <div style="background:rgba(255,255,255,0.07);border-radius:10px;height:14px;overflow:hidden">
+          <div id="batBar" style="height:100%;width:0%;background:linear-gradient(90deg,#00e676,#69f0ae);border-radius:10px;transition:width 1s ease,background 0.5s ease;box-shadow:0 0 10px rgba(0,230,118,0.4)"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px;font-family:var(--font-mono)">
+          <span>0% — 3.0V</span><span>100% — 4.2V</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FALL DETECTION CARD (orange) ─────────────────────── -->
     <div class="fall-section">
       <div style="padding:20px 28px 16px;display:flex;align-items:center;justify-content:space-between">
         <div style="display:flex;align-items:center;gap:14px">
-          <div class="vital-icon-wrap" style="background:rgba(255,145,0,0.15);box-shadow:0 0 20px rgba(255,145,0,0.2);font-size:24px;width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center">🫸</div>
+          <div class="vital-icon-wrap" style="background:rgba(179,0,255,0.15);box-shadow:0 0 20px rgba(179,0,255,0.25);font-size:24px;width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center">🚨</div>
           <div>
-            <div class="vital-title" style="color:#ff9100;font-family:var(--font-head);font-size:19px;font-weight:700;letter-spacing:1px">FALL DETECTION</div>
-            <div class="vital-subtitle" style="font-size:12px;color:var(--muted);margin-top:2px">MPU6050 accelerometer monitoring</div>
+            <div class="vital-title" style="color:#b300ff;font-family:var(--font-head);font-size:19px;font-weight:700;letter-spacing:1px">FALL DETECTION</div>
+            <div class="vital-subtitle" style="font-size:12px;color:var(--muted);margin-top:2px">MPU6050 — jerk + stillness algorithm</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:12px">
           <span class="fall-counter" id="fallCount">Falls detected: 0</span>
-          <button class="btn-sm" style="background:rgba(255,145,0,0.1);color:#ff9100;border:1px solid rgba(255,145,0,0.3)" onclick="clearFallLog()">CLEAR LOG</button>
+          <button class="btn-sm" style="background:rgba(179,0,255,0.1);color:#b300ff;border:1px solid rgba(179,0,255,0.3)" onclick="clearFallLog()">CLEAR LOG</button>
         </div>
       </div>
       <div style="padding:0 28px 28px">
@@ -230,31 +255,44 @@
             <div class="fall-status-sub">Patient is stable — no fall event registered</div>
           </div>
         </div>
-        <!-- Battery + Steps row -->
-        <div style="display:flex;gap:16px;margin-top:16px;flex-wrap:wrap">
-          <!-- Battery -->
-          <div style="flex:1;min-width:180px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:14px 18px">
-            <div style="font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">🔋 Battery</div>
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-              <span id="batIcon" style="font-size:22px">🔋</span>
-              <span id="batPct" style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--good)">--%</span>
-            </div>
-            <div style="background:rgba(255,255,255,0.07);border-radius:6px;height:8px;overflow:hidden">
-              <div id="batBar" style="height:100%;width:0%;background:var(--good);border-radius:6px;transition:width 0.8s ease,background 0.4s ease"></div>
-            </div>
-          </div>
-          <!-- Steps -->
-          <div style="flex:1;min-width:180px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:14px 18px">
-            <div style="font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">👣 Step Count</div>
-            <div style="font-family:var(--font-mono);font-size:26px;font-weight:700;color:var(--spo2-color)" id="stepCount">-- steps</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:6px">Counted since last power-on</div>
-          </div>
-        </div>
-
         <div style="margin-top:16px">
           <div style="font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:10px">📋 Fall Event Log</div>
           <div class="fall-log" id="fallLog">
             <div class="fall-log-empty">No fall events recorded yet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STEP COUNTER CARD (pink) ──────────────────────────── -->
+    <div style="border-radius:20px;margin-bottom:24px;overflow:hidden;border:1px solid rgba(255,64,129,0.25);background:linear-gradient(160deg,#1a0010 0%,var(--panel) 40%);animation:fadeUp 0.5s ease both">
+      <div style="height:3px;background:linear-gradient(90deg,#ff4081,#f50057,#ff80ab)"></div>
+      <div style="padding:20px 28px 24px">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:50px;height:50px;border-radius:14px;background:rgba(255,64,129,0.12);box-shadow:0 0 20px rgba(255,64,129,0.25);display:flex;align-items:center;justify-content:center;font-size:26px">👣</div>
+          <div>
+            <div style="font-family:var(--font-head);font-size:19px;font-weight:700;letter-spacing:1px;color:#ff4081">STEP COUNTER</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px">MPU6050 — peak detection on acceleration magnitude</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div id="stepCount" style="font-family:var(--font-mono);font-size:40px;font-weight:700;color:#ff4081;line-height:1;text-shadow:0 0 20px rgba(255,64,129,0.5)">--</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px;letter-spacing:1px">STEPS</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,64,129,0.15);border-radius:12px;padding:12px 16px;display:flex;justify-content:space-around;text-align:center">
+          <div>
+            <div style="font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Est. Distance</div>
+            <div id="stepDist" style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:#ff4081;margin-top:4px">-- m</div>
+          </div>
+          <div style="border-left:1px solid var(--border)"></div>
+          <div>
+            <div style="font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Est. Calories</div>
+            <div id="stepCal" style="font-family:var(--font-mono);font-size:18px;font-weight:700;color:#ff80ab;margin-top:4px">-- kcal</div>
+          </div>
+          <div style="border-left:1px solid var(--border)"></div>
+          <div>
+            <div style="font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Since power-on</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:6px">Resets on restart</div>
           </div>
         </div>
       </div>
@@ -342,7 +380,7 @@
             <div class="result-vital-minmax" id="resultTempMinMax"></div>
           </div>
           <div class="result-vital-box" style="border-color:rgba(0,200,255,0.25)">
-            <span class="result-vital-icon">🫁</span>
+            <span class="result-vital-icon">💧</span>
             <span class="result-vital-val" id="resultSpo2" style="color:var(--spo2-color)">--</span>
             <div class="result-vital-label">SpO₂ %</div>
             <div class="result-vital-status" id="resultSpo2Status"></div>
